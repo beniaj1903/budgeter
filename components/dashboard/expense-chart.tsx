@@ -60,7 +60,7 @@ export function ExpenseChart({ transactions }: ExpenseChartProps) {
               cx="50%"
               cy="50%"
               labelLine={false}
-              label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+              label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
               outerRadius={80}
               fill="#8884d8"
               dataKey="value"
@@ -69,7 +69,7 @@ export function ExpenseChart({ transactions }: ExpenseChartProps) {
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
-            <Tooltip formatter={(value: number) => `$${value.toFixed(2)}`} />
+            <Tooltip formatter={(value: any) => `$${value.toFixed(2)}`} />
             <Legend />
           </PieChart>
         </ResponsiveContainer>

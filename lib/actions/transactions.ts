@@ -108,25 +108,7 @@ export async function getRecentTransactions(limit: number = 10) {
   }
 }
 
-export async function getTransactionsByBudget(budgetId: string) {
-  try {
-    const transactions = await prisma.transaction.findMany({
-      where: { budgetId },
-      include: {
-        category: {
-          select: {
-            id: true,
-            name: true,
-            color: true,
-            icon: true,
-          },
-        },
-      },
-      orderBy: { date: 'desc' },
-    })
-
-    return transactions as TransactionWithCategory[]
-  } catch (error) {
-    return []
-  }
-}
+// Deprecated: Transactions are now associated with budgets through categories
+// export async function getTransactionsByBudget(budgetId: string) {
+//   ...
+// }

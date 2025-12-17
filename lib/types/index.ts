@@ -5,25 +5,27 @@ export type RecurringFrequency = 'daily' | 'weekly' | 'monthly' | 'yearly'
 export interface Category {
   id: string
   name: string
-  type: TransactionType
+  type: string
   color: string
   icon: string
   isDefault: boolean
   createdAt: Date
+  updatedAt?: Date
 }
 
 export interface RecurringTransaction {
   id: string
   description: string
   amount: number
-  type: TransactionType
-  frequency: RecurringFrequency
+  type: string
+  frequency: string
   categoryId: string
   startDate: Date
   endDate: Date | null
   isActive: boolean
   lastProcessed: Date | null
   createdAt: Date
+  updatedAt?: Date
 }
 
 export interface CategoryWithStats {

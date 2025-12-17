@@ -60,7 +60,10 @@ export function CategoryManager({ categories }: CategoryManagerProps) {
     setLoading(true)
 
     try {
-      const result = await createCategory(formData)
+      const result = await createCategory({
+        ...formData,
+        isDefault: false
+      })
       if (result.success) {
         setFormData({
           name: '',
