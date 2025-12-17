@@ -89,7 +89,7 @@ async function RecentTransactionsList() {
           <p className="text-sm text-muted-foreground">No hay transacciones registradas</p>
         ) : (
           <div className="space-y-4">
-            {transactions.map((transaction) => (
+            {transactions.map((transaction: any) => (
               <div key={transaction.id} className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div

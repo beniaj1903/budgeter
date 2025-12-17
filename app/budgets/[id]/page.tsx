@@ -173,7 +173,7 @@ export default async function BudgetDetailPage({ params }: BudgetDetailPageProps
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {budget.transactions.map((transaction) => (
+                  {budget.transactions.map((transaction: any) => (
                     <div
                       key={transaction.id}
                       className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"

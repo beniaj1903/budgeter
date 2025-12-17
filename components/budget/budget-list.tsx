@@ -78,7 +78,7 @@ export function BudgetList({ budgets, categories }: BudgetListProps) {
                 </div>
                 {budget.categories && budget.categories.length > 0 && (
                   <div className="flex items-center gap-1 flex-wrap">
-                    {budget.categories.map((category) => (
+                    {budget.categories.map((category: any) => (
                       <div
                         key={category.id}
                         className="flex items-center gap-1 text-xs bg-muted px-2 py-1 rounded"
