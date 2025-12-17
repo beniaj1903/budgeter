@@ -81,8 +81,8 @@ export async function getBudgets() {
     })
 
     const budgetsWithStats: BudgetWithStats[] = await Promise.all(
-      budgets.map(async (budget) => {
-        const categoryIds = budget.budgetCategories.map(bc => bc.categoryId)
+      budgets.map(async (budget: any) => {
+        const categoryIds = budget.budgetCategories.map((bc: any) => bc.categoryId)
 
         // Obtener transacciones que coinciden con las categorías del presupuesto
         // y están dentro del rango de fechas
@@ -112,7 +112,7 @@ export async function getBudgets() {
           spent,
           remaining,
           percentage,
-          categories: budget.budgetCategories.map(bc => bc.category),
+          categories: budget.budgetCategories.map((bc: any) => bc.category),
         }
       })
     )
@@ -142,8 +142,8 @@ export async function getActiveBudgets() {
     })
 
     const budgetsWithStats: BudgetWithStats[] = await Promise.all(
-      budgets.map(async (budget) => {
-        const categoryIds = budget.budgetCategories.map(bc => bc.categoryId)
+      budgets.map(async (budget: any) => {
+        const categoryIds = budget.budgetCategories.map((bc: any) => bc.categoryId)
 
         const transactions = await prisma.transaction.findMany({
           where: {
@@ -171,7 +171,7 @@ export async function getActiveBudgets() {
           spent,
           remaining,
           percentage,
-          categories: budget.budgetCategories.map(bc => bc.category),
+          categories: budget.budgetCategories.map((bc: any) => bc.category),
         }
       })
     )
@@ -197,7 +197,7 @@ export async function getBudgetById(id: string) {
 
     if (!budget) return null
 
-    const categoryIds = budget.budgetCategories.map(bc => bc.categoryId)
+    const categoryIds = budget.budgetCategories.map((bc: any) => bc.categoryId)
 
     const transactions = await prisma.transaction.findMany({
       where: {
@@ -236,7 +236,7 @@ export async function getBudgetById(id: string) {
       spent,
       remaining,
       percentage,
-      categories: budget.budgetCategories.map(bc => bc.category),
+      categories: budget.budgetCategories.map((bc: any) => bc.category),
       transactions,
     }
   } catch (error) {
