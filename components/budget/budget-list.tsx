@@ -13,7 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { deleteBudget } from '@/lib/actions/budgets'
 import { BudgetWithStats } from '@/lib/types'
 import { EditBudgetDialog } from './edit-budget-dialog'
-import { Category } from '@prisma/client'
+import { Category } from '@/lib/types'
 
 interface BudgetListProps {
   budgets: BudgetWithStats[]

@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge'
 import { deleteTransaction } from '@/lib/actions/transactions'
 import { TransactionWithCategory } from '@/lib/types'
 import { EditTransactionDialog } from './edit-transaction-dialog'
-import { Category } from '@prisma/client'
+import { Category } from '@/lib/types'
 
 interface TransactionListProps {
   transactions: TransactionWithCategory[]

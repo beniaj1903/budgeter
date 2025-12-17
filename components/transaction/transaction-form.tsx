@@ -22,7 +22,7 @@ import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { CalendarIcon } from 'lucide-react'
 import { createTransaction } from '@/lib/actions/transactions'
-import { Category } from '@prisma/client'
+import { Category } from '@/lib/types'
 
 interface TransactionFormProps {
   categories: Category[]

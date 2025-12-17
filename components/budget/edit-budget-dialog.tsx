@@ -31,7 +31,7 @@ import { es } from 'date-fns/locale'
 import { CalendarIcon } from 'lucide-react'
 import { updateBudget } from '@/lib/actions/budgets'
 import { BudgetPeriod } from '@/lib/types'
-import { Category } from '@prisma/client'
+import { Category } from '@/lib/types'
 import { BudgetWithStats } from '@/lib/types'
 
 interface EditBudgetDialogProps {

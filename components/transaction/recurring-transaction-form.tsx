@@ -22,7 +22,7 @@ import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { CalendarIcon, Repeat } from 'lucide-react'
 import { createRecurringTransaction, toggleRecurringTransaction } from '@/lib/actions/recurring'
-import { Category, RecurringTransaction } from '@prisma/client'
+import { Category, RecurringTransaction } from '@/lib/types'
 import { Badge } from '@/components/ui/badge'
 import { Switch } from '@/components/ui/switch'
 

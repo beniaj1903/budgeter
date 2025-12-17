@@ -25,7 +25,7 @@ import { Badge } from '@/components/ui/badge'
 import { Plus, Trash2 } from 'lucide-react'
 import * as Icons from 'lucide-react'
 import { createCategory, deleteCategory } from '@/lib/actions/categories'
-import { Category } from '@prisma/client'
+import { Category } from '@/lib/types'
 
 interface CategoryManagerProps {
   categories: Category[]

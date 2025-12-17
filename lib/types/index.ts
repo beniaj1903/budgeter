@@ -2,6 +2,30 @@ export type TransactionType = 'income' | 'expense'
 export type BudgetPeriod = 'daily' | 'weekly' | 'monthly' | 'annual'
 export type RecurringFrequency = 'daily' | 'weekly' | 'monthly' | 'yearly'
 
+export interface Category {
+  id: string
+  name: string
+  type: TransactionType
+  color: string
+  icon: string
+  isDefault: boolean
+  createdAt: Date
+}
+
+export interface RecurringTransaction {
+  id: string
+  description: string
+  amount: number
+  type: TransactionType
+  frequency: RecurringFrequency
+  categoryId: string
+  startDate: Date
+  endDate: Date | null
+  isActive: boolean
+  lastProcessed: Date | null
+  createdAt: Date
+}
+
 export interface CategoryWithStats {
   id: string
   name: string
