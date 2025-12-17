@@ -142,7 +142,7 @@ export default async function BudgetDetailPage({ params }: BudgetDetailPageProps
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
-                  {budget.categories.map((category) => (
+                  {budget.categories.map((category: { id: string; name: string; color: string }) => (
                     <div
                       key={category.id}
                       className="flex items-center gap-2 bg-muted px-3 py-2 rounded-lg"
