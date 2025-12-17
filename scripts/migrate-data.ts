@@ -53,7 +53,7 @@ async function migrateData() {
 
     // 2. Migrar transacciones
     console.log('💰 Migrando transacciones...')
-    const transactions = localDb.prepare('SELECT * FROM Transaction').all()
+    const transactions = localDb.prepare('SELECT * FROM "Transaction"').all()
     for (const transaction of transactions as any[]) {
       await tursoClient.transaction.upsert({
         where: { id: transaction.id },
