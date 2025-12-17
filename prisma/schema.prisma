@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// Modelo de Categorías
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  type        String   // "income" o "expense"
+  color       String   // Código hexadecimal
+  icon        String   // Nombre del ícono de lucide-react
+  isDefault   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  transactions Transaction[]
+  recurringTransactions RecurringTransaction[]
+  budgetCategories BudgetCategory[]
+}
+
+// Modelo de Presupuestos
+model Budget {
+  id          String   @id @default(cuid())
+  name        String
+  amount      Float
+  period      String   // "daily", "weekly", "monthly", "annual"
+  startDate   DateTime
+  endDate     DateTime
+  startTime   String?  // Para presupuestos diarios (HH:mm)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  budgetCategories BudgetCategory[]
+}
+
+// Tabla intermedia para relación muchos a muchos entre Budget y Category
+model BudgetCategory {
+  id         String   @id @default(cuid())
+  budgetId   String
+  categoryId String
+  createdAt  DateTime @default(now())
+
+  budget   Budget   @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([budgetId, categoryId])
+}
+
+// Modelo de Transacciones (Gastos e Ingresos)
+model Transaction {
+  id          String   @id @default(cuid())
+  description String
+  amount      Float
+  type        String   // "income" o "expense"
+  date        DateTime
+  categoryId  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
+
+// Modelo de Transacciones Recurrentes
+model RecurringTransaction {
+  id          String   @id @default(cuid())
+  description String
+  amount      Float
+  type        String   // "income" o "expense"
+  frequency   String   // "daily", "weekly", "monthly", "yearly"
+  startDate   DateTime
+  endDate     DateTime?
+  categoryId  String
+  isActive    Boolean  @default(true)
+  lastProcessed DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}

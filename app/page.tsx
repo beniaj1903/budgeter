@@ -1,65 +1,243 @@
-import Image from "next/image";
+import { Suspense } from 'react'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Wallet, TrendingUp, TrendingDown, PiggyBank } from 'lucide-react'
+import { initializeDefaultCategories, getCategories } from '@/lib/actions/categories'
+import { getActiveBudgets, getBudgets } from '@/lib/actions/budgets'
+import { getRecentTransactions, getTransactions } from '@/lib/actions/transactions'
+import { getRecurringTransactions } from '@/lib/actions/recurring'
+import { format } from 'date-fns'
+import { es } from 'date-fns/locale'
+import { TransactionForm } from '@/components/transaction/transaction-form'
+import { TransactionList } from '@/components/transaction/transaction-list'
+import { BudgetFormNew } from '@/components/budget/budget-form-new'
+import { BudgetList } from '@/components/budget/budget-list'
+import { CategoryManager } from '@/components/category/category-manager'
+import { RecurringTransactionForm } from '@/components/transaction/recurring-transaction-form'
+import { ExpenseChart } from '@/components/dashboard/expense-chart'
 
-export default function Home() {
+async function DashboardStats() {
+  const transactions = await getRecentTransactions(100)
+  const budgets = await getActiveBudgets()
+
+  const totalIncome = transactions
+    .filter(t => t.type === 'income')
+    .reduce((sum, t) => sum + t.amount, 0)
+
+  const totalExpenses = transactions
+    .filter(t => t.type === 'expense')
+    .reduce((sum, t) => sum + t.amount, 0)
+
+  const balance = totalIncome - totalExpenses
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Balance Total</CardTitle>
+          <Wallet className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">${balance.toFixed(2)}</div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Ingresos</CardTitle>
+          <TrendingUp className="h-4 w-4 text-green-600" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold text-green-600">${totalIncome.toFixed(2)}</div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Gastos</CardTitle>
+          <TrendingDown className="h-4 w-4 text-red-600" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold text-red-600">${totalExpenses.toFixed(2)}</div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Presupuestos Activos</CardTitle>
+          <PiggyBank className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{budgets.length}</div>
+        </CardContent>
+      </Card>
     </div>
-  );
+  )
+}
+
+async function RecentTransactionsList() {
+  const transactions = await getRecentTransactions(5)
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Transacciones Recientes</CardTitle>
+        <CardDescription>Últimas 5 transacciones registradas</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {transactions.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No hay transacciones registradas</p>
+        ) : (
+          <div className="space-y-4">
+            {transactions.map((transaction) => (
+              <div key={transaction.id} className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="h-3 w-3 rounded-full"
+                    style={{ backgroundColor: transaction.category.color }}
+                  />
+                  <div>
+                    <p className="text-sm font-medium">{transaction.description}</p>
+                    <p className="text-xs text-muted-foreground" suppressHydrationWarning>
+                      {transaction.category.name} • {format(new Date(transaction.date), 'PPP', { locale: es })}
+                    </p>
+                  </div>
+                </div>
+                <p className={`text-sm font-semibold ${transaction.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
+                  {transaction.type === 'income' ? '+' : '-'}${transaction.amount.toFixed(2)}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  )
+}
+
+export default async function Home() {
+  await initializeDefaultCategories()
+
+  const categories = await getCategories()
+  const budgets = await getBudgets()
+  const activeBudgets = await getActiveBudgets()
+  const allTransactions = await getTransactions()
+  const recurringTransactions = await getRecurringTransactions()
+
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold mb-2">Budgeter</h1>
+          <p className="text-muted-foreground">Gestiona tus finanzas personales de forma sencilla</p>
+        </div>
+
+        <Tabs defaultValue="dashboard" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+            <TabsTrigger value="transactions">Transacciones</TabsTrigger>
+            <TabsTrigger value="budgets">Presupuestos</TabsTrigger>
+            <TabsTrigger value="categories">Categorías</TabsTrigger>
+            <TabsTrigger value="recurring">Recurrentes</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="dashboard" className="space-y-6">
+            <Suspense fallback={<div>Cargando estadísticas...</div>}>
+              <DashboardStats />
+            </Suspense>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <Suspense fallback={<div>Cargando transacciones...</div>}>
+                <RecentTransactionsList />
+              </Suspense>
+
+              <ExpenseChart transactions={allTransactions} />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="transactions" className="space-y-6">
+            <div className="grid gap-6 lg:grid-cols-3">
+              <Card className="lg:col-span-1">
+                <CardHeader>
+                  <CardTitle>Nueva Transacción</CardTitle>
+                  <CardDescription>Registra un ingreso o gasto</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <TransactionForm categories={categories} />
+                </CardContent>
+              </Card>
+
+              <div className="lg:col-span-2">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Todas las Transacciones</CardTitle>
+                    <CardDescription>Historial completo de ingresos y gastos</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <TransactionList
+                      transactions={allTransactions}
+                      categories={categories}
+                    />
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="budgets" className="space-y-6">
+            <div className="grid gap-6 lg:grid-cols-3">
+              <Card className="lg:col-span-1">
+                <CardHeader>
+                  <CardTitle>Nuevo Presupuesto</CardTitle>
+                  <CardDescription>Crea un presupuesto personalizado</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <BudgetFormNew categories={categories} />
+                </CardContent>
+              </Card>
+
+              <div className="lg:col-span-2">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Mis Presupuestos</CardTitle>
+                    <CardDescription>Gestiona y monitorea tus presupuestos</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <BudgetList budgets={budgets} categories={categories} />
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="categories">
+            <Card>
+              <CardHeader>
+                <CardTitle>Categorías</CardTitle>
+                <CardDescription>Gestiona las categorías de tus transacciones</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <CategoryManager categories={categories} />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="recurring">
+            <Card>
+              <CardHeader>
+                <CardTitle>Transacciones Recurrentes</CardTitle>
+                <CardDescription>Automatiza tus ingresos y gastos periódicos</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <RecurringTransactionForm
+                  categories={categories}
+                  recurringTransactions={recurringTransactions}
+                />
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
+  )
 }
