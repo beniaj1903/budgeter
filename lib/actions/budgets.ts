@@ -97,7 +97,7 @@ export async function getBudgets() {
           },
         })
 
-        const spent = transactions.reduce((sum, t) => sum + t.amount, 0)
+        const spent = transactions.reduce((sum: number, t: any) => sum + t.amount, 0)
         const remaining = budget.amount - spent
         const percentage = (spent / budget.amount) * 100
 
@@ -156,7 +156,7 @@ export async function getActiveBudgets() {
           },
         })
 
-        const spent = transactions.reduce((sum, t) => sum + t.amount, 0)
+        const spent = transactions.reduce((sum: number, t: any) => sum + t.amount, 0)
         const remaining = budget.amount - spent
         const percentage = (spent / budget.amount) * 100
 
@@ -221,7 +221,7 @@ export async function getBudgetById(id: string) {
       orderBy: { date: 'desc' },
     })
 
-    const spent = transactions.reduce((sum, t) => sum + t.amount, 0)
+    const spent = transactions.reduce((sum: number, t: any) => sum + t.amount, 0)
     const remaining = budget.amount - spent
     const percentage = (spent / budget.amount) * 100
 

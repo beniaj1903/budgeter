@@ -11,7 +11,7 @@ interface ExpenseChartProps {
 export function ExpenseChart({ transactions }: ExpenseChartProps) {
   const expenseTransactions = transactions.filter(t => t.type === 'expense')
 
-  const categoryData = expenseTransactions.reduce((acc, transaction) => {
+  const categoryData = expenseTransactions.reduce((acc: { name: string; value: number; color: string }[], transaction: any) => {
     const categoryName = transaction.category.name
     const existing = acc.find(item => item.name === categoryName)
 
