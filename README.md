@@ -1,164 +1,264 @@
-# Budgeter - Gestor de Finanzas Personales
+# 💰 Budgeter
 
-Una aplicación web moderna y sencilla para gestionar tus finanzas personales. Creada con Next.js 14, TypeScript, Prisma y shadcn/ui.
+Una aplicación moderna de gestión de finanzas personales construida con Next.js 16, Prisma y Turso.
 
-## Características
+[![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-7-2D3748)](https://www.prisma.io/)
+[![Turso](https://img.shields.io/badge/Turso-SQLite-4FC08D)](https://turso.tech/)
 
-- **Dashboard Intuitivo**: Visualiza tu balance, ingresos, gastos y presupuestos activos de un vistazo
-- **Presupuestos Flexibles**: Crea presupuestos mensuales, semanales, diarios o anuales con fechas de inicio personalizables
-- **Categorías Personalizables**: Usa categorías predefinidas o crea las tuyas propias con colores e íconos
-- **Transacciones**: Registra tus ingresos y gastos de manera sencilla
-- **Gastos Recurrentes**: Configura transacciones que se agreguen automáticamente en la periodicidad que elijas
-- **Gráficos y Estadísticas**: Visualiza tus gastos y el estado de tus presupuestos
+## ✨ Características
 
-## Stack Tecnológico
+- 📊 **Dashboard Interactivo** - Visualiza tu balance, ingresos, gastos y estadísticas
+- 💸 **Gestión de Transacciones** - Crea, edita y elimina ingresos y gastos
+- 🎯 **Presupuestos Inteligentes** - Presupuestos automáticos basados en categorías y fechas
+- 📁 **Categorías Personalizables** - 14 categorías predefinidas + categorías custom
+- 🔄 **Transacciones Recurrentes** - Automatiza gastos e ingresos periódicos
+- 📈 **Gráficos y Análisis** - Visualiza tus gastos por categoría
+- 🎨 **UI Moderna** - Construida con shadcn/ui y Tailwind CSS
+- ☁️ **Base de Datos en la Nube** - Turso (SQLite distribuido)
+- 🚀 **Deploy a Netlify** - Configuración lista para producción
 
-- **Frontend**: Next.js 14 (App Router), React, TypeScript
-- **Estilos**: Tailwind CSS, shadcn/ui
-- **Base de Datos**: Prisma ORM con SQLite (desarrollo) / PostgreSQL (producción)
-- **Validación**: Zod
-- **Fechas**: date-fns
-- **Gráficos**: Recharts
-- **Iconos**: Lucide React
+## 🚀 Inicio Rápido
 
-## Requisitos Previos
+### Requisitos
 
 - Node.js 18.17 o superior
 - npm o yarn
+- Cuenta en [Turso](https://turso.tech/) (gratis)
 
-## Instalación
+### Instalación
 
-1. Clona el repositorio (o ya estás en él)
+1. **Clona el repositorio**
 
-2. Instala las dependencias:
 ```bash
+git clone git@github.com:beniaj1903/budgeter.git
+cd budgeter
+```
+
+2. **Instala dependencias**
+
+```bash
+nvm use  # Usa la versión correcta de Node
 npm install
 ```
 
-3. Genera el cliente de Prisma y crea la base de datos:
-```bash
-npm run db:push
-npm run db:generate
-```
-
-## Scripts Disponibles
+3. **Configura Turso**
 
 ```bash
-# Iniciar el servidor de desarrollo
-npm run dev
+# Instala Turso CLI
+curl -sSfL https://get.tur.so/install.sh | bash
 
-# Compilar para producción
-npm run build
+# Crea cuenta y base de datos
+turso auth signup
+turso db create budgeter-db
 
-# Iniciar el servidor de producción
-npm start
-
-# Ejecutar el linter
-npm run lint
-
-# Sincronizar el esquema de Prisma con la base de datos
-npm run db:push
-
-# Abrir Prisma Studio (interfaz visual para la base de datos)
-npm run db:studio
-
-# Generar el cliente de Prisma
-npm run db:generate
+# Obtén credenciales
+turso db show budgeter-db --url
+turso db tokens create budgeter-db
 ```
 
-## Uso
+4. **Configura variables de entorno**
 
-1. Inicia el servidor de desarrollo:
+Crea un archivo `.env` con tus credenciales de Turso:
+
+```env
+DATABASE_URL="libsql://budgeter-db-tu-usuario.turso.io"
+DATABASE_AUTH_TOKEN="tu-token-aqui"
+```
+
+5. **Sincroniza el esquema de base de datos**
+
+```bash
+npm run db:push
+```
+
+6. **Inicia el servidor de desarrollo**
+
 ```bash
 npm run dev
 ```
 
-2. Abre tu navegador en [http://localhost:3000](http://localhost:3000)
+Abre [http://localhost:3008](http://localhost:3008) en tu navegador.
 
-3. La primera vez que accedas, se crearán automáticamente las categorías predefinidas
+## 📖 Documentación
 
-## Estructura del Proyecto
+- [📘 Guía de Inicio Rápido](./QUICKSTART.md) - Tutorial completo de funcionalidades
+- [🚀 Guía de Despliegue](./DEPLOYMENT.md) - Documentación detallada para producción
+- [⚡ Pasos Rápidos de Deploy](./DEPLOY-STEPS.md) - Guía resumida para Netlify
+
+## 🏗️ Tecnologías
+
+### Frontend
+- **[Next.js 16](https://nextjs.org/)** - React framework con App Router
+- **[TypeScript](https://www.typescriptlang.org/)** - Type safety
+- **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS
+- **[shadcn/ui](https://ui.shadcn.com/)** - Componentes reutilizables
+- **[Recharts](https://recharts.org/)** - Gráficos y visualizaciones
+- **[date-fns](https://date-fns.org/)** - Manejo de fechas
+
+### Backend
+- **[Prisma 7](https://www.prisma.io/)** - ORM de siguiente generación
+- **[Turso](https://turso.tech/)** - SQLite edge database
+- **[Zod](https://zod.dev/)** - Validación de schemas
+- **Server Actions** - Mutations del lado del servidor
+
+### DevOps
+- **[Netlify](https://www.netlify.com/)** - Hosting y CI/CD
+- **[GitHub](https://github.com/)** - Control de versiones
+
+## 🗂️ Estructura del Proyecto
 
 ```
 budgeter/
-├── app/                    # Next.js App Router
-│   ├── page.tsx           # Página principal con dashboard
-│   └── globals.css        # Estilos globales
-├── components/            # Componentes React
-│   ├── ui/               # Componentes shadcn/ui
-│   ├── budget/           # Componentes de presupuestos
-│   ├── transaction/      # Componentes de transacciones
-│   ├── category/         # Componentes de categorías
-│   └── dashboard/        # Componentes del dashboard
-├── lib/                   # Utilidades y lógica
-│   ├── actions/          # Server Actions de Next.js
-│   │   ├── budgets.ts   # Acciones de presupuestos
-│   │   ├── categories.ts # Acciones de categorías
-│   │   ├── transactions.ts # Acciones de transacciones
-│   │   └── recurring.ts  # Acciones de transacciones recurrentes
-│   ├── types/            # Definiciones de tipos TypeScript
-│   ├── validations/      # Esquemas de validación Zod
-│   ├── constants.ts      # Categorías predefinidas
-│   ├── prisma.ts         # Cliente de Prisma
-│   └── utils.ts          # Funciones utilitarias
-├── prisma/
-│   ├── schema.prisma     # Esquema de la base de datos
-│   └── dev.db            # Base de datos SQLite (desarrollo)
-└── package.json
+├── app/                      # Next.js App Router
+│   ├── budgets/[id]/        # Página de detalle de presupuesto
+│   ├── globals.css          # Estilos globales
+│   ├── layout.tsx           # Layout principal
+│   └── page.tsx             # Dashboard principal
+├── components/              # Componentes React
+│   ├── budget/             # Componentes de presupuestos
+│   ├── category/           # Gestión de categorías
+│   ├── dashboard/          # Componentes del dashboard
+│   ├── transaction/        # Componentes de transacciones
+│   └── ui/                 # Componentes de shadcn/ui
+├── lib/                     # Lógica de negocio
+│   ├── actions/            # Server Actions
+│   ├── types/              # TypeScript types
+│   ├── validations/        # Schemas de Zod
+│   ├── constants.ts        # Constantes de la app
+│   ├── prisma.ts           # Cliente de Prisma
+│   └── utils.ts            # Utilidades
+├── prisma/                  # Configuración de Prisma
+│   └── schema.prisma       # Schema de base de datos
+├── scripts/                 # Scripts de utilidad
+│   └── migrate-data.ts     # Migración de datos a Turso
+├── .env                     # Variables de entorno (no incluido)
+├── .env.example            # Template de variables
+├── netlify.toml            # Configuración de Netlify
+└── package.json            # Dependencias y scripts
 ```
 
-## Modelos de Datos
+## 📊 Base de Datos
 
-### Category (Categorías)
-- Nombre, tipo (ingreso/gasto), color e ícono
-- Categorías predefinidas y personalizadas
+El proyecto usa **Turso** (SQLite distribuido) con el siguiente esquema:
 
-### Budget (Presupuestos)
-- Nombre, monto, período (diario/semanal/mensual/anual)
-- Fechas de inicio y fin personalizables
-- Hora de inicio para presupuestos diarios
+- **Category** - Categorías de ingresos/gastos
+- **Transaction** - Transacciones individuales
+- **Budget** - Presupuestos con períodos personalizables
+- **BudgetCategory** - Relación many-to-many entre presupuestos y categorías
+- **RecurringTransaction** - Transacciones que se repiten automáticamente
 
-### Transaction (Transacciones)
-- Descripción, monto, tipo, fecha
-- Relacionada con una categoría
-- Opcionalmente asociada a un presupuesto
+### Migración de Datos
 
-### RecurringTransaction (Transacciones Recurrentes)
-- Similar a Transaction pero con frecuencia (diaria/semanal/mensual/anual)
-- Se procesan automáticamente en la periodicidad configurada
-- Pueden activarse/desactivarse
+Si tienes datos en SQLite local, puedes migrarlos a Turso:
 
-## Próximas Funcionalidades
-
-- Formularios completos para crear y editar transacciones
-- Formularios para crear y editar presupuestos
-- Gestión visual de categorías
-- Gráficos detallados con Recharts
-- Filtros y búsqueda de transacciones
-- Exportación de datos
-- Modo oscuro
-- Autenticación de usuarios
-- Multi-moneda
-
-## Base de Datos
-
-El proyecto usa SQLite para desarrollo. Para producción, puedes cambiar fácilmente a PostgreSQL modificando el archivo `prisma/schema.prisma`:
-
-```prisma
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
+```bash
+npm run db:migrate
 ```
 
-Y actualizando la variable `DATABASE_URL` en tu archivo `.env`.
+O usando el script bash:
 
-## Deploy en Vercel
+```bash
+./migrate-to-turso.sh
+```
 
-La forma más fácil de desplegar tu app de Next.js es usar [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme).
+## 🛠️ Scripts Disponibles
 
-Consulta la [documentación de despliegue de Next.js](https://nextjs.org/docs/app/building-your-application/deploying) para más detalles.
+```bash
+# Desarrollo
+npm run dev              # Inicia servidor en localhost:3008
 
-## Licencia
+# Base de datos
+npm run db:push          # Sincroniza schema con Turso
+npm run db:studio        # Abre Prisma Studio
+npm run db:generate      # Genera cliente de Prisma
+npm run db:migrate       # Migra datos locales a Turso
 
-MIT
+# Producción
+npm run build            # Construye para producción
+npm start                # Inicia servidor de producción
+npm run lint             # Linter de código
+```
+
+## 🚀 Despliegue
+
+### Netlify (Recomendado)
+
+1. Crea una cuenta en [Netlify](https://netlify.com)
+2. Conecta tu repositorio de GitHub
+3. Configura las variables de entorno:
+   - `DATABASE_URL`
+   - `DATABASE_AUTH_TOKEN`
+4. Deploy automático en cada push a `main`
+
+Ver [guía completa de despliegue](./DEPLOYMENT.md).
+
+### Vercel (Alternativa)
+
+```bash
+npm i -g vercel
+vercel
+vercel env add DATABASE_URL
+vercel env add DATABASE_AUTH_TOKEN
+vercel --prod
+```
+
+## 🎯 Funcionalidades Principales
+
+### 1. Presupuestos Inteligentes
+Los presupuestos se asocian automáticamente con transacciones basándose en:
+- Categorías seleccionadas
+- Rango de fechas del presupuesto
+- Sin necesidad de asignación manual
+
+### 2. Períodos Flexibles
+Crea presupuestos con diferentes períodos:
+- Diario (con hora de inicio opcional)
+- Semanal
+- Mensual
+- Anual
+
+### 3. Gestión Completa de Transacciones
+- Edición inline de transacciones
+- Soporte para ingresos y gastos
+- Categorización personalizable
+- Historial completo con filtros
+
+### 4. Dashboard Analítico
+- Balance total en tiempo real
+- Estadísticas de ingresos y gastos
+- Gráfico circular de distribución
+- Transacciones recientes
+- Estado de presupuestos activos
+
+## 🤝 Contribuir
+
+Las contribuciones son bienvenidas. Por favor:
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📝 Licencia
+
+Este proyecto es de código abierto bajo la licencia MIT.
+
+## 🙏 Agradecimientos
+
+- [shadcn/ui](https://ui.shadcn.com/) por los componentes de UI
+- [Turso](https://turso.tech/) por la base de datos edge
+- [Prisma](https://www.prisma.io/) por el excelente ORM
+- [Next.js](https://nextjs.org/) por el framework
+
+## 📧 Contacto
+
+Benito Sanchez - [@beniaj1903](https://github.com/beniaj1903)
+
+Link del Proyecto: [https://github.com/beniaj1903/budgeter](https://github.com/beniaj1903/budgeter)
+
+---
+
+Hecho con ❤️ usando Next.js y Turso
