@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Wallet, TrendingUp, TrendingDown, PiggyBank } from 'lucide-react'
+import { Wallet, TrendingUp, TrendingDown, PiggyBank, LayoutDashboard, Receipt, Folder, Repeat } from 'lucide-react'
 import { initializeDefaultCategories, getCategories } from '@/lib/actions/categories'
 import { getActiveBudgets, getBudgets } from '@/lib/actions/budgets'
 import { getRecentTransactions, getTransactions } from '@/lib/actions/transactions'
@@ -134,11 +134,26 @@ export default async function Home() {
 
         <Tabs defaultValue="dashboard" className="space-y-6">
           <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-            <TabsTrigger value="transactions">Transacciones</TabsTrigger>
-            <TabsTrigger value="budgets">Presupuestos</TabsTrigger>
-            <TabsTrigger value="categories">Categorías</TabsTrigger>
-            <TabsTrigger value="recurring">Recurrentes</TabsTrigger>
+            <TabsTrigger value="dashboard" className="flex items-center gap-2">
+              <LayoutDashboard className="h-4 w-4" />
+              <span className="hidden sm:inline">Dashboard</span>
+            </TabsTrigger>
+            <TabsTrigger value="transactions" className="flex items-center gap-2">
+              <Receipt className="h-4 w-4" />
+              <span className="hidden sm:inline">Transacciones</span>
+            </TabsTrigger>
+            <TabsTrigger value="budgets" className="flex items-center gap-2">
+              <PiggyBank className="h-4 w-4" />
+              <span className="hidden sm:inline">Presupuestos</span>
+            </TabsTrigger>
+            <TabsTrigger value="categories" className="flex items-center gap-2">
+              <Folder className="h-4 w-4" />
+              <span className="hidden sm:inline">Categorías</span>
+            </TabsTrigger>
+            <TabsTrigger value="recurring" className="flex items-center gap-2">
+              <Repeat className="h-4 w-4" />
+              <span className="hidden sm:inline">Recurrentes</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="dashboard" className="space-y-6">
