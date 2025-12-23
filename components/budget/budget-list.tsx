@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { Trash2, TrendingDown, Eye, Pencil } from 'lucide-react'
+import { Trash2, TrendingDown, Eye, Pencil, Copy } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { deleteBudget } from '@/lib/actions/budgets'
 import { BudgetWithStats } from '@/lib/types'
 import { EditBudgetDialog } from './edit-budget-dialog'
+import { CloneBudgetDialog } from './clone-budget-dialog'
 import { Category } from '@/lib/types'
 
 interface BudgetListProps {
@@ -24,6 +25,7 @@ export function BudgetList({ budgets, categories }: BudgetListProps) {
   const router = useRouter()
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [editingBudget, setEditingBudget] = useState<BudgetWithStats | null>(null)
+  const [cloningBudget, setCloningBudget] = useState<BudgetWithStats | null>(null)
 
   const handleDelete = async (id: string) => {
     if (!confirm('¿Estás seguro de eliminar este presupuesto?')) return
@@ -98,7 +100,16 @@ export function BudgetList({ budgets, categories }: BudgetListProps) {
               <Button
                 variant="ghost"
                 size="icon"
+                onClick={() => setCloningBudget(budget)}
+                title="Clonar presupuesto"
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => setEditingBudget(budget)}
+                title="Editar presupuesto"
               >
                 <Pencil className="h-4 w-4" />
               </Button>
@@ -107,6 +118,7 @@ export function BudgetList({ budgets, categories }: BudgetListProps) {
                 size="icon"
                 onClick={() => handleDelete(budget.id)}
                 disabled={deletingId === budget.id}
+                title="Eliminar presupuesto"
               >
                 <Trash2 className="h-4 w-4 text-destructive" />
               </Button>
@@ -176,6 +188,14 @@ export function BudgetList({ budgets, categories }: BudgetListProps) {
           categories={categories}
           open={!!editingBudget}
           onOpenChange={(open) => !open && setEditingBudget(null)}
+        />
+      )}
+
+      {cloningBudget && (
+        <CloneBudgetDialog
+          budget={cloningBudget}
+          open={!!cloningBudget}
+          onOpenChange={(open) => !open && setCloningBudget(null)}
         />
       )}
     </div>
