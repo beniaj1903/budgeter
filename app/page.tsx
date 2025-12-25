@@ -12,6 +12,7 @@ import { TransactionForm } from '@/components/transaction/transaction-form'
 import { TransactionList } from '@/components/transaction/transaction-list'
 import { BudgetFormNew } from '@/components/budget/budget-form-new'
 import { BudgetList } from '@/components/budget/budget-list'
+import { BudgetsWithFilter } from '@/components/budget/budgets-with-filter'
 import { CategoryManager } from '@/components/category/category-manager'
 import { RecurringTransactionForm } from '@/components/transaction/recurring-transaction-form'
 import { ExpenseChart } from '@/components/dashboard/expense-chart'
@@ -211,16 +212,8 @@ export default async function Home() {
                 </CardContent>
               </Card>
 
-              <div className="lg:col-span-2">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Mis Presupuestos</CardTitle>
-                    <CardDescription>Gestiona y monitorea tus presupuestos</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <BudgetList budgets={budgets} categories={categories} />
-                  </CardContent>
-                </Card>
+              <div className="lg:col-span-2 space-y-6">
+                <BudgetsWithFilter budgets={budgets} categories={categories} />
               </div>
             </div>
           </TabsContent>
